@@ -28,11 +28,14 @@ const CourseInput = (props) => {
     props.onAddGoal(enteredValue);
   };
 
-  // In line 31, 33 - making some CSS style adjustment based on valid and invalid user input
+  // In line 37, 41,42 - making some CSS style adjustment based on valid and invalid user input
+  // In line 35 either form control or form control invalid depending on users input - dynamically adding
   return (
     <form onSubmit={formSubmitHandler}>
-      <div className="form-control">
-        <label style={{ color: !isValid ? "red" : "black" }}>Course Goal</label>
+      <div className={`form-control ${!isValid ? "invalid" : ""}`}>
+        <label>Course Goal</label>
+        <input type="text" onChange={goalInputChangeHandler} />
+        {/* <label style={{ color: !isValid ? "red" : "black" }}>Course Goal</label>
         <input
           style={{
             borderColor: !isValid ? "red" : "black",
@@ -40,7 +43,7 @@ const CourseInput = (props) => {
           }}
           type="text"
           onChange={goalInputChangeHandler}
-        />
+        /> */}
       </div>
       <Button type="submit">Add Goal</Button>
     </form>
