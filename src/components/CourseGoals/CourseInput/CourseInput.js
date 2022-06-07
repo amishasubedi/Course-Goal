@@ -1,53 +1,87 @@
 import React, { useState } from "react";
+import styled from "styled-components";
 
 import Button from "../../UI/Button/Button";
 import "./CourseInput.css";
 
+const FormControl = styled.div`
+  margin: 0.5rem 0;
+  & label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.5rem;
+    color: ${(props) => (props.invalid ? "red" : "black")};
+  }
+  & input {
+    display: block;
+    width: 100%;
+    border: 1px solid ${(props) => (props.invalid ? "red" : "#ccc")};
+    background: ${(props) => (props.invalid ? "#ffd7d7" : "transparent")};
+    font: inherit;
+    line-height: 1.5rem;
+    padding: 0 0.25rem;
+  }
+  & input:focus {
+    outline: none;
+    background: #fad0ec;
+    border-color: #8b005d;
+  }
+`;
+
 const CourseInput = (props) => {
   const [enteredValue, setEnteredValue] = useState("");
-
-  const [isValid, setIsValid] = useState(true); // indicator to check if user entered valid input or not in add goals
+  const [isValid, setIsValid] = useState(true);
 
   const goalInputChangeHandler = (event) => {
-    if (event.target.value.trim.length > 0) {
-      // to remove invalid css styling after entering valid user input
-      setIsValid(true); //
+    if (event.target.value.trim().length > 0) {
+      setIsValid(true);
     }
     setEnteredValue(event.target.value);
   };
 
   const formSubmitHandler = (event) => {
     event.preventDefault();
-
-    // Before triggering Add Goal button, check if the entered value is empty or not
     if (enteredValue.trim().length === 0) {
-      //return; // cannot add empty goals - but it does not give user any feedback so do that add extra state
-      setIsValid(false); // - now work on style adjustment
+      setIsValid(false);
       return;
     }
     props.onAddGoal(enteredValue);
   };
 
-  // In line 37, 41,42 - making some CSS style adjustment based on valid and invalid user input
-  // In line 35 either form control or form control invalid depending on users input - dynamically adding
+  // dynamic props
   return (
     <form onSubmit={formSubmitHandler}>
-      <div className={`form-control ${!isValid ? "invalid" : ""}`}>
+      <FormControl invalid={!isValid}>
         <label>Course Goal</label>
         <input type="text" onChange={goalInputChangeHandler} />
-        {/* <label style={{ color: !isValid ? "red" : "black" }}>Course Goal</label>
-        <input
-          style={{
-            borderColor: !isValid ? "red" : "black",
-            background: !isValid ? "salmon" : "black",
-          }}
-          type="text"
-          onChange={goalInputChangeHandler}
-        /> */}
-      </div>
+      </FormControl>
       <Button type="submit">Add Goal</Button>
     </form>
   );
 };
 
 export default CourseInput;
+
+// styled components
+
+// In line 73,76,77 - making some CSS style adjustment based on valid and invalid user input
+// In line 35 either form control or form control invalid depending on users input - dynamically adding
+//   return (
+//     <form onSubmit={formSubmitHandler}>
+//       <div className={`form-control ${!isValid ? "invalid" : ""}`}>
+//         <label>Course Goal</label>
+//         <input type="text" onChange={goalInputChangeHandler} />
+//         {/* <label style={{ color: !isValid ? "red" : "black" }}>Course Goal</label>
+//         <input
+//           style={{
+//             borderColor: !isValid ? "red" : "black",
+//             background: !isValid ? "salmon" : "black",
+//           }}
+//           type="text"
+//           onChange={goalInputChangeHandler}
+//         /> */}
+//       </div>
+//       <Button type="submit">Add Goal</Button>
+//     </form>
+//   );
+// };
